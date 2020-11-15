@@ -70,7 +70,7 @@ class Server(threading.Thread):
     def remove_connection(self,conn):
         self.connections.remove(conn)
         
-#new code
+#new code------
 class Command(threading.Thread):
     def __init__(self):
         super().__init__()
@@ -81,20 +81,20 @@ class Command(threading.Thread):
             ipt = input()
             if ipt == '/quit':
                 print('\nQuiting all connections...')
-                for self.conn in server.connections:
-                    self.conn.send("Server will quit Connetion...")
-                    #self.conn.sc.close()
-                self.conn.server.remove_connection(self.conn)
+                self.conn = server.connections.copy()
+                for ser_sock in self.conn:
+                    ser_sock.send("Server will quit Connetion...")
+                    ser_sock.sc.close()
+                    ser_sock.server.remove_connection(ser_sock)
                 os._exit(0)
-#end of new code
-                
+#------------
+
 HOST = '127.0.0.1'
 PORT = 8000
 
 server = Server(HOST, PORT)
 server.start()
-
-#new code
+#new code-----------
 command = Command()
 command.start()
-#end of new code
+#------------------
